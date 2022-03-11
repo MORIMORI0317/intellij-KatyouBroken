@@ -1,0 +1,24 @@
+<idea-plugin>
+    <id>net.morimori0317.katyoubroken.KatyouBroken</id>
+    <name>Katyou Broken</name>
+    <vendor>MORIMORI0317</vendor>
+
+    <description><![CDATA[
+    The katyou broken when characters or files are deleted
+    ]]></description>
+
+    <idea-version since-build="213.0"/>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <applicationListeners>
+        <listener class="net.morimori0317.katyoubroken.KBVfsListener"
+                  topic="com.intellij.openapi.vfs.newvfs.BulkFileListener"/>
+    </applicationListeners>
+    <extensions defaultExtensionNs="com.intellij">
+        <backspaceHandlerDelegate implementation="net.morimori0317.katyoubroken.KBHandler"/>
+    </extensions>
+    <actions>
+
+    </actions>
+</idea-plugin>

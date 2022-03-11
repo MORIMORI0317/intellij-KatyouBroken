@@ -1,0 +1,15 @@
+plugins {
+    id 'org.jetbrains.intellij' version '1.4.0'
+}
+
+group 'net.morimori0317'
+version '1.0'
+repositories {
+    mavenCentral()
+}
+intellij {
+    version = '2021.3.2'
+}
+patchPluginXml {
+    changeNotes = """"""
+}
