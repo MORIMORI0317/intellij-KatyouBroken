@@ -1,24 +1,29 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>net.morimori0317.katyoubroken.KatyouBroken</id>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>net.morimori0317.katyou-broken</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>Katyou Broken</name>
-    <vendor>MORIMORI0317</vendor>
 
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor url="https://github.com/MORIMORI0317">MORIMORI0317</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    The katyou broken when characters or files are deleted
-    ]]></description>
+    Katyou broken sound is played when deleting files and when erasing characters.
+  ]]></description>
 
-    <idea-version since-build="213.0"/>
-
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-
-    <applicationListeners>
-        <listener class="net.morimori0317.katyoubroken.KBVfsListener"
-                  topic="com.intellij.openapi.vfs.newvfs.BulkFileListener"/>
-    </applicationListeners>
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <backspaceHandlerDelegate implementation="net.morimori0317.katyoubroken.KBHandler"/>
+        <vfs.asyncListener implementation="net.morimori0317.katyoubroken.KBVfsListener"/>
+        <backspaceHandlerDelegate implementation="net.morimori0317.katyoubroken.KBBackspaceHandler"/>
     </extensions>
-    <actions>
-
-    </actions>
 </idea-plugin>

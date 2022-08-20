@@ -7,18 +7,17 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
-public class KBHandler extends BackspaceHandlerDelegate {
+public class KBBackspaceHandler extends BackspaceHandlerDelegate {
     private static final Random rand = new Random();
 
     @Override
-    public void beforeCharDeleted(char c, @NotNull PsiFile psiFile, @NotNull Editor editor) {
-
+    public void beforeCharDeleted(char c, @NotNull PsiFile file, @NotNull Editor editor) {
     }
 
     @Override
-    public boolean charDeleted(char c, @NotNull PsiFile psiFile, @NotNull Editor editor) {
+    public boolean charDeleted(char c, @NotNull PsiFile file, @NotNull Editor editor) {
         if (rand.nextInt(10) == 0)
-            KatyouPlayer.playBroken(false);
+            KatyouPlayer.getInstance().playBroken(false);
         return false;
     }
 }
