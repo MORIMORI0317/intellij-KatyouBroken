@@ -13,7 +13,7 @@ public class KBVfsListener implements AsyncFileListener {
     public @Nullable ChangeApplier prepareChange(@NotNull List<? extends @NotNull VFileEvent> events) {
         boolean[] broken = new boolean[1];
         for (VFileEvent event : events) {
-            if (event instanceof VFileDeleteEvent && !event.isFromRefresh()) {
+            if (event instanceof VFileDeleteEvent && !event.isFromRefresh() && event.isValid() && !event.isFromSave()) {
                 broken[0] = true;
                 break;
             }
