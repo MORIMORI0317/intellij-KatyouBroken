@@ -20,10 +20,14 @@
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
-    <!-- Extension points defined by the plugin.
-         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+
     <extensions defaultExtensionNs="com.intellij">
         <vfs.asyncListener implementation="net.morimori0317.katyoubroken.KBVfsListener"/>
         <backspaceHandlerDelegate implementation="net.morimori0317.katyoubroken.KBBackspaceHandler"/>
     </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="net.morimori0317.katyoubroken.KatyouPlayerService"/>
+    </extensions>
+
 </idea-plugin>

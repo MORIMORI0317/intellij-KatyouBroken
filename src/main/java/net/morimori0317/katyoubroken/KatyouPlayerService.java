@@ -1,5 +1,8 @@
 package net.morimori0317.katyoubroken;
 
+import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.ApplicationManager;
+import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -8,14 +11,16 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class KatyouPlayer {
-    private static final KatyouPlayer INSTANCE = new KatyouPlayer();
-    private static int playerNumber;
+public class KatyouPlayerService implements Disposable {
+    private final ExecutorService executorService = Executors.newCachedThreadPool(new BasicThreadFactory.Builder().namingPattern("katyou-player-%d").daemon(true).build());
     private final Random random = new Random();
 
-    public static KatyouPlayer getInstance() {
-        return INSTANCE;
+    public static KatyouPlayerService getInstance() {
+        return ApplicationManager.getApplication().getService(KatyouPlayerService.class);
     }
 
     public void playBroken(boolean broken) {
@@ -27,13 +32,22 @@ public class KatyouPlayer {
     }
 
     private void play(String id) {
-        PlayerThread player = new PlayerThread(id);
-        player.start();
+        CompletableFuture.runAsync(() -> {
+            try {
+                playInternal(id);
+            } catch (LineUnavailableException | IOException | UnsupportedAudioFileException ignored) {
+            }
+        }, executorService);
+    }
+
+    @Override
+    public void dispose() {
+        executorService.shutdown();
     }
 
     private void playInternal(String id) throws LineUnavailableException, IOException, UnsupportedAudioFileException {
         id = String.format("/katyou_sounds/%s.wav", id);
-        try (InputStream stream = resourceExtractor(KatyouPlayer.class, id)) {
+        try (InputStream stream = resourceExtractor(KatyouPlayerService.class, id)) {
             if (stream == null) return;
             try (BufferedInputStream bufstream = new BufferedInputStream(stream); AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(bufstream)) {
                 AudioFormat af = audioInputStream.getFormat();
@@ -63,22 +77,5 @@ public class KatyouPlayer {
         InputStream stream = clazz.getResourceAsStream("/" + path);
         if (stream == null) stream = ClassLoader.getSystemResourceAsStream(path);
         return stream != null ? new BufferedInputStream(stream) : null;
-    }
-
-    private class PlayerThread extends Thread {
-        private final String id;
-
-        public PlayerThread(String id) {
-            this.id = id;
-            setName("katyou-sound-player-" + playerNumber++);
-        }
-
-        @Override
-        public void run() {
-            try {
-                playInternal(id);
-            } catch (UnsupportedAudioFileException | LineUnavailableException | IOException ignored) {
-            }
-        }
     }
 }

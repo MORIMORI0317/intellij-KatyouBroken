@@ -22,7 +22,7 @@ public class KBVfsListener implements AsyncFileListener {
         return new ChangeApplier() {
             @Override
             public void afterVfsChange() {
-                if (broken[0]) KatyouPlayer.getInstance().playBroken(true);
+                if (broken[0]) KatyouPlayerService.getInstance().playBroken(true);
             }
         };
     }
