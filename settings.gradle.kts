@@ -1,1 +1,1 @@
-rootProject.name = "katyou-broken"
+rootProject.name = "IntelliJ Katyou Broken"
